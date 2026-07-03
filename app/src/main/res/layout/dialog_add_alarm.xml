@@ -51,14 +51,4 @@
         <CheckBox android:id="@+id/cb_day6" android:text="D"
             android:layout_width="wrap_content" android:layout_height="wrap_content"/>
     </LinearLayout>
-</LinearLayout>    <LinearLayout android:orientation="horizontal"
-        android:layout_width="match_parent" android:layout_height="wrap_content">
-        <CheckBox android:id="@+id/cb_day0" android:text="L"/>
-        <CheckBox android:id="@+id/cb_day1" android:text="M"/>
-        <CheckBox android:id="@+id/cb_day2" android:text="M"/>
-        <CheckBox android:id="@+id/cb_day3" android:text="J"/>
-        <CheckBox android:id="@+id/cb_day4" android:text="V"/>
-        <CheckBox android:id="@+id/cb_day5" android:text="S"/>
-        <CheckBox android:id="@+id/cb_day6" android:text="D"/>
-    </LinearLayout>
 </LinearLayout>
