@@ -65,34 +65,40 @@ public class MainActivity extends Activity {
     }
 
     private void showAddDialog() {
-        View v = getLayoutInflater().inflate(R.layout.dialog_add_alarm, null);
-        TimePicker picker = v.findViewById(R.id.time_picker);
-        picker.setIs24HourView(true);
-        CheckBox[] boxes = {
-            v.findViewById(R.id.cb_day0), v.findViewById(R.id.cb_day1),
-            v.findViewById(R.id.cb_day2), v.findViewById(R.id.cb_day3),
-            v.findViewById(R.id.cb_day4), v.findViewById(R.id.cb_day5),
-            v.findViewById(R.id.cb_day6)
-        };
+    View v = getLayoutInflater().inflate(R.layout.dialog_add_alarm, null);
+    NumberPicker pickerHour = v.findViewById(R.id.picker_hour);
+    NumberPicker pickerMinute = v.findViewById(R.id.picker_minute);
+    pickerHour.setMinValue(0);
+    pickerHour.setMaxValue(23);
+    pickerMinute.setMinValue(0);
+    pickerMinute.setMaxValue(59);
+    pickerMinute.setFormatter(n -> String.format("%02d", n));
 
-        new AlertDialog.Builder(this)
-            .setTitle("Nouveau réveil")
-            .setView(v)
-            .setPositiveButton("Enregistrer", (dialog, which) -> {
-                Alarm a = new Alarm();
-                a.id = System.currentTimeMillis();
-                a.hour = picker.getHour();
-                a.minute = picker.getMinute();
-                for (int i = 0; i < 7; i++) a.days[i] = boxes[i].isChecked();
-                a.enabled = true;
+    CheckBox[] boxes = {
+        v.findViewById(R.id.cb_day0), v.findViewById(R.id.cb_day1),
+        v.findViewById(R.id.cb_day2), v.findViewById(R.id.cb_day3),
+        v.findViewById(R.id.cb_day4), v.findViewById(R.id.cb_day5),
+        v.findViewById(R.id.cb_day6)
+    };
 
-                List<Alarm> all = AlarmStore.loadAll(this);
-                all.add(a);
-                AlarmStore.saveAll(this, all);
-                AlarmScheduler.schedule(this, a);
-                refreshList();
-            })
-            .setNegativeButton("Annuler", null)
-            .show();
+    new AlertDialog.Builder(this)
+        .setTitle("Nouveau réveil")
+        .setView(v)
+        .setPositiveButton("Enregistrer", (dialog, which) -> {
+            Alarm a = new Alarm();
+            a.id = System.currentTimeMillis();
+            a.hour = pickerHour.getValue();
+            a.minute = pickerMinute.getValue();
+            for (int i = 0; i < 7; i++) a.days[i] = boxes[i].isChecked();
+            a.enabled = true;
+
+            List<Alarm> all = AlarmStore.loadAll(this);
+            all.add(a);
+            AlarmStore.saveAll(this, all);
+            AlarmScheduler.schedule(this, a);
+            refreshList();
+        })
+        .setNegativeButton("Annuler", null)
+        .show();
     }
 }
